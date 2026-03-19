@@ -47,4 +47,12 @@ class Company {
         set { contact = value; }
     }
 
+    public void UpdateCompanyInfo(int nif, string address, string country, string status, string stakeholder, string contact) {
+        this.nif = nif;
+        this.address = address;
+        this.country = country;
+        this.status = status;
+        this.stakeholder = stakeholder;
+        this.contact = contact;
+    }
 }
