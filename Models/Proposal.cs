@@ -1,5 +1,5 @@
 class Proposal {
-    private int proposalID;//ProposalID: Unique identifier
+    private static int proposalID = 0;//ProposalID: Unique identifier
     private Lead lead;//● Lead: Reference to the associated lead
     private List<Product> products;//● Products: List of associated products
     private double productionCost;//● ProductionCost: Cost of production
@@ -8,8 +8,8 @@ class Proposal {
     private string status;//● Status: Proposal status (e.g., Draft, Active)
     //● Inherits relevant fields from the associated Lead
 
-    public Proposal(int proposalID, Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, string status) {
-        this.proposalID = proposalID;
+    public Proposal( Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, string status) {
+        this.proposalID = proposalID++;
         this.lead = lead;
         this.products = products;
         this.productionCost = productionCost;
@@ -19,7 +19,7 @@ class Proposal {
     }
 
     public int ProposalID() {
-        get; set;
+        get;
     }
     public Lead Lead() {
         get; set;
