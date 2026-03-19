@@ -32,4 +32,11 @@ class Lead {
     public string Status {
         get; set;
     }
+
+    public void UpdateLeadInfo(Company company, string businessType, string status) {
+        this.company = company;
+        this.country = company.country; 
+        this.businessType = businessType;
+        this.status = status;
+    }
 }
