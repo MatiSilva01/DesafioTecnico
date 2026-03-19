@@ -19,30 +19,30 @@ class Company {
     }
 
     //GETTERS AND SETTERS
-    public int ID() {
+    public int ID {
         get { return id; }
     }
-    public int NIF() {
+    public int NIF {
         get { return nif; }
         set { nif = value; }
     }
-    public string Address() {
+    public string Address {
         get { return address; }
         set { address = value; }    
     }
-    public string Country() {
+    public string Country {
         get { return country; }
         set { country = value; }
     }
-    public string Status() {
+    public string Status {
         get { return status; }
         set { status = value; }
     }
-    public string Stakeholder() {
+    public string Stakeholder {
         get { return stakeholder; }
         set { stakeholder = value; }
     }
-    public string Contact() {
+    public string Contact {
         get { return contact; }
         set { contact = value; }
     }

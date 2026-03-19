@@ -10,15 +10,15 @@ class Product {
         this.productType = productType;
     }
     //getters e setters
-    public int ProductID() {
+    public int ProductID {
         get; 
     }
 
-    public Product DependentProduct() {
+    public Product DependentProduct {
         get; set;
     }
 
-    public string ProductType() {
+    public string ProductType {
         get; set;
     }
 }

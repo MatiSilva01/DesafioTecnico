@@ -18,27 +18,27 @@ class Proposal {
         this.status = status;
     }
 
-    public int ProposalID() {
+    public int ProposalID {
         get;
     }
-    public Lead Lead() {
+    public Lead Lead {
         get; set;
     }
-    public List<Product> Products() {
-        get; set;
-    }
-
-    public double ProductionCost() {
+    public List<Product> Products {
         get; set;
     }
 
-    public int MonthlyProducedProducts() {
+    public double ProductionCost {
         get; set;
     }
-    public double ExpectedMonthlyProfit() {
+
+    public int MonthlyProducedProducts {
         get; set;
     }
-    public string Status() {
+    public double ExpectedMonthlyProfit {
+        get; set;
+    }
+    public string Status {
         get; set;
     }
 }

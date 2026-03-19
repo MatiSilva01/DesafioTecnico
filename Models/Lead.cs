@@ -15,21 +15,21 @@ class Lead {
     }
 
     //GETTERS AND SETTERS
-    public Company Company() {
+    public Company Company {
         get;set; //sera que faz sentido ter um setter para a empresa? talvez seja melhor só ter um getter, já que a empresa é definida no construtor 
     }
 
-    public int LeadId() {
+    public int LeadId {
         get;
     }
 
-    public string Country() {
+    public string Country {
         get; //o país é herdado da empresa entao nao faz sentido o setter 
     }
-    public string BusinessType() {
+    public string BusinessType {
         get; set;
     }
-    public string Status() {
+    public string Status {
         get; set;
     }
 }
