@@ -1,6 +1,7 @@
 class Lead {
     private Company company;//Company: Reference to the associated company
-    private static int leadId = 0;//LeadID: Unique identifier
+    private static int counter = 0;
+    private int leadId = 0;//LeadID: Unique identifier
     private string country;//Country: Inherited from the company
     private string businessType;//BusinessType: Type of business (e.g., Industry, Retail)
     private string status;//Status: Status of the lead (e.g., Draft, Active)
@@ -8,8 +9,8 @@ class Lead {
     //CONSTRUCTOR
     public Lead(Company company, string businessType, string status) {
         this.company = company;
-        this.leadId = leadId++;
-        this.country = company.country; 
+        this.leadId = counter++;
+        this.country = company.Country; 
         this.businessType = businessType; 
         this.status = status;
     }
@@ -35,8 +36,11 @@ class Lead {
 
     public void UpdateLeadInfo(Company company, string businessType, string status) {
         this.company = company;
-        this.country = company.country; 
+        this.country = company.Country; 
         this.businessType = businessType;
         this.status = status;
+    }
+    public Proposal leadToProposal() {
+        return new Proposal(this, new List<Product>(), 0, 0, 0, "Draft");
     }
 }
