@@ -9,14 +9,14 @@ class Proposal {
     private string status;//● Status: Proposal status (e.g., Draft, Active)
     //● Inherits relevant fields from the associated Lead
 
-    public Proposal( Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, string status) {
+    public Proposal( Lead lead) {
         this.proposalID = counter++;
         this.lead = lead;
-        this.products = products;
-        this.productionCost = productionCost;
-        this.monthlyProducedProducts = monthlyProducedProducts;
-        this.expectedMonthlyProfit = expectedMonthlyProfit;
-        this.status = status;
+        this.products = new List<Product>();
+        //this.productionCost = productionCost;
+        //this.monthlyProducedProducts = monthlyProducedProducts;
+        //this.expectedMonthlyProfit = expectedMonthlyProfit;
+        this.status = "Draft";
     }
 
     public int ProposalID {

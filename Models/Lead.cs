@@ -41,6 +41,6 @@ class Lead {
         this.status = status;
     }
     public Proposal leadToProposal() {
-        return new Proposal(this, new List<Product>(), 0, 0, 0, "Draft");
+        return new Proposal(this);
     }
 }
