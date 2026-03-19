@@ -1,5 +1,6 @@
 class Company {
-    private static int id = 0;//ID: Unique identifier
+    private static int counter = 0;//ID: Unique identifier
+    private int id = 0;//ID: Unique identifier
     private int nif;//● NIF: Tax Identification Number (required depending on country)
     private string address;//● Address: Company address
     private string country;//● Country: Country where the company is based
@@ -9,11 +10,11 @@ class Company {
 
     //CONSTRUCTOR
     public Company(int nif, string address, string country, string status, string stakeholder, string contact) {
-        this.id = id++;
+        this.id = counter++;
         this.nif = nif;
         this.address = address;
         this.country = country;
-        this.status = status;
+        this.status = status; //se calhar poderia iniciar logo como Draft, TODO verficiar
         this.stakeholder = stakeholder;
         this.contact = contact;
     }

@@ -1,11 +1,12 @@
 class Product {
-    private static int productID = 0;
+    private static int counter = 0;
+    private int productID = 0;
     private Product dependentProduct;//DependentProduct: Reference to another product (if dependent)
     private string productType;//ProductType: Type/category of the product (e.g., Electronics, Furniture)
 
     //CONSTRUTOR
     public Product(Product dependentProduct, string productType) {
-        this.productID = productID++;
+        this.productID = counter++;
         this.dependentProduct = dependentProduct;
         this.productType = productType;
     }
