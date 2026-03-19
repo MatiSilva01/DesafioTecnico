@@ -21,4 +21,9 @@ class Product {
     public string ProductType {
         get; set;
     }
+
+    public void UpdateProductInfo(Product dependentProduct, string productType) {
+        this.dependentProduct = dependentProduct;
+        this.productType = productType;
+    }
 }
