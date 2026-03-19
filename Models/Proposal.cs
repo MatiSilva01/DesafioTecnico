@@ -41,4 +41,13 @@ class Proposal {
     public string Status {
         get; set;
     }
+
+    public void UpdateProposalInfo(Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, string status) {
+        this.lead = lead;
+        this.products = products;
+        this.productionCost = productionCost;
+        this.monthlyProducedProducts = monthlyProducedProducts;
+        this.expectedMonthlyProfit = expectedMonthlyProfit;
+        this.status = status;
+    }
 }
