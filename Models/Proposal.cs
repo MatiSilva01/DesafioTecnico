@@ -6,44 +6,62 @@ class Proposal {
     private double productionCost;//● ProductionCost: Cost of production
     private int monthlyProducedProducts;//● MonthlyProducedProducts: Quantity produced monthly
     private double expectedMonthlyProfit;//● ExpectedMonthlyProfit: Estimated profit per month
-    private string status;//● Status: Proposal status (e.g., Draft, Active)
+    private ProposalStatusEnum status;//● Status: Proposal status (e.g., Draft, Active)
     //● Inherits relevant fields from the associated Lead
+    enum ProposalStatusEnum { //TODO verificar se enum deve ser public 
+        Draft, //proposta criada 
+        Submitted, //proposta submetida para aprovação
+        Approved, //proposta aprovada
+        Rejected,
+        Expired //sem respoosta do cliente depois de um tempo
+    }
 
     public Proposal( Lead lead) {
+        if (lead == null){
+            throw new ArgumentNullException(nameof(lead),"Proposal must have an associated lead.");
+        }
         this.proposalID = counter++;
         this.lead = lead;
         this.products = new List<Product>();
+        //TODO verificar se faz sentido o construtor receber os produtos, o custo de produção, a quantidade produzida mensalmente e o lucro mensal esperado ou se isso devia ser definido depois, porque quando se cria a proposta ainda não se sabe quais os produtos que vão estar associados, nem o custo de produção, etc. Talvez seja melhor criar a proposta só com a lead e depois ir adicionando os produtos e as outras informações.
         //this.productionCost = productionCost;
         //this.monthlyProducedProducts = monthlyProducedProducts;
         //this.expectedMonthlyProfit = expectedMonthlyProfit;
-        this.status = "Draft";
+        this.status = ProposalStatusEnum.Draft;
     }
 
     public int ProposalID {
-        get;
+        get { return proposalID; }
     }
     public Lead Lead {
-        get; set;
+        get { return lead; }
+        set { lead = value; }
     }
     public List<Product> Products {
-        get; set;
+        get { return products; }
+        //nao pus set, porque temos o add products
     }
 
     public double ProductionCost {
-        get; set;
+        get { return productionCost; }
+        set { productionCost = value; }
     }
 
     public int MonthlyProducedProducts {
-        get; set;
+        get { return monthlyProducedProducts; }
+        set { monthlyProducedProducts = value; }
     }
     public double ExpectedMonthlyProfit {
-        get; set;
+        get { return expectedMonthlyProfit; }
+        set { expectedMonthlyProfit = value; }
     }
-    public string Status {
-        get; set;
+    public ProposalStatusEnum Status {
+        get { return status; }
+        set { status = value; }
     }
 
-    public void UpdateProposalInfo(Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, string status) {
+//um update por cada campo talvez
+    public void UpdateProposalInfo(Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, ProposalStatusEnum status) {
         this.lead = lead;
         this.products = products;
         this.productionCost = productionCost;
@@ -53,19 +71,41 @@ class Proposal {
     }
 
     public void AddProduct(Product product) {
-        if (product.DependentProduct != null ) { //tem dependente
-            if (products.Contains(product.DependentProduct)){//verificar se o produto dependente ja esta na lista
-                product.productType = product.DependentProduct.ProductType; //o tipo do produto é o mesmo do produto dependente
-                this.products.Add(product); //já tem o produto dependente, entao podemos adicionar o produto
+        if (product == null) {
+            Console.WriteLine("Error: Cannot add a null product to the proposal.");
+            return; //nao adicionar o produto
+        }
+        if (product.DependentProduct != null ) { //se tem dependente
+            if(products.Contains(product.DependentProduct)){//verificar se o produto dependente ja esta na lista
+                //se o dependete ta na lista verifica se é do mesmo tipo
+                if(product.ProductType != product.DependentProduct.ProductType){
+                    Console.WriteLine($"Error: Cannot add Product ID={product.ProductID} because its type {product.ProductType} is different from its dependent product type {product.DependentProduct.ProductType}.");
+                    return; //nao adicionar o produto
+                }
+                //product.ProductType = product.DependentProduct.ProductType; //o tipo do produto é o mesmo do produto dependente
+            }else{//se o produto dependente nao esta na lista nao pode adicionar o produto 
+                Console.WriteLine($"Error: Cannot add Product ID={product.ProductID} because its dependent product ID={product.DependentProduct.ProductID} is not in the list os products of the proposal.");
+                return; //nao adicionar o produto
             }
         }
-        
+        products.Add(product); //adicionar o produto
+    }
+    public void RemoveProduct(Product product) {
+        if (product == null) {
+            Console.WriteLine("Error: Cannot remove a null product from the proposal.");
+            return; //nao remover o produto
+        }
+        if (products.Contains(product)) {
+            products.Remove(product); //remover o produto
+        } else {
+            Console.WriteLine($"Error: Cannot remove Product ID={product.ProductID} because it is not in the list of products of the proposal.");
+        }
     }
 
     public void FinalizeProposal() {
         if (lead != null && lead.Company != null){
             Company company = lead.Company;
-            company.Status = "Active";
+            company.Status = CompanyStatusEnum.Active;
         }
     }
 }
