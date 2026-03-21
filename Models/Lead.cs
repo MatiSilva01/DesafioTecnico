@@ -61,11 +61,15 @@ class Lead {
         get { return status; }
         set { status = value; }
     }
-
-    public void UpdateLeadInfo(Company company, BusinessTypeEnum businessType, StatusLeadEnum status) { //um update por informaçao nao? TODO
+    //atualizar informacoes do lead
+    public void UpdateLeadCompany(Company company) {
         this.company = company;
-        this.country = company.Country; 
+        this.country = company.Country; //atualizar o país quando se atualiza a empresa, porque o país é herdado da empresa
+    }
+    public void UpdateLeadBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+    }
+    public void UpdateLeadStatus(StatusLeadEnum status) {
         this.status = status;
     }
     public Proposal leadToProposal() {
