@@ -3,38 +3,66 @@ class Lead {
     private static int counter = 0;
     private int leadId = 0;//LeadID: Unique identifier
     private string country;//Country: Inherited from the company
-    private string businessType;//BusinessType: Type of business (e.g., Industry, Retail)
+    private BusinessTypeEnum businessType;//BusinessType: Type of business (e.g., Industry, Retail)
     private string status;//Status: Status of the lead (e.g., Draft, Active)
+    enum BusinessTypeEnum
+    {
+        Industry,
+        Retail,
+        Education,
+        Technology,
+        Healthcare,
+        Finance,
+        Defense,
+        FoodService,
+        Transportation,
+        Energy
+    }
+    private enum StatusLeadEnum { 
+        Draft,  //criado e nao avançou
+        Accepted, //passou a proposal
+        Rejected //rejeitado 
+    }; // Company status (e.g., Draft, Active)
+    private StatusLeadEnum status; // Current status
 
-    //CONSTRUCTOR
-    public Lead(Company company, string businessType, string status) {
+    //CONSTRUCTOR TODO
+    public Lead(Company company, BusinessTypeEnum businessType) {
+        if (company == null){
+            throw new ArgumentNullException(nameof(company),"Lead must have an associated company.");
+        }
+        if (businessType == null){
+            throw new ArgumentNullException(nameof(businessType),"Lead must have a business type.");
+        }
         this.company = company;
         this.leadId = counter++;
-        this.country = company.Country; 
+        this.country = company.Country; //o contrutor esta mal porque o país é herdado da empresa
         this.businessType = businessType; 
-        this.status = status;
+        this.status = StatusLeadEnum.Draft; //construtor logo mete em draft
     }
 
     //GETTERS AND SETTERS
     public Company Company {
-        get;set; //sera que faz sentido ter um setter para a empresa? talvez seja melhor só ter um getter, já que a empresa é definida no construtor 
+        get { return company; }
+        set { company = value; } // TODO sera que faz sentido ter um setter para a empresa? talvez seja melhor só ter um getter, já que a empresa é definida no construtor e 
     }
 
     public int LeadId {
-        get;
+        get { return leadId; }
     }
 
     public string Country {
-        get; //o país é herdado da empresa entao nao faz sentido o setter 
+        get { return country; } //o país é herdado da empresa entao nao faz sentido o setter 
     }
-    public string BusinessType {
-        get; set;
+    public BusinessTypeEnum BusinessType {
+        get { return businessType; }
+        set { businessType = value; }
     }
-    public string Status {
-        get; set;
+    public StatusLeadEnum Status {
+        get { return status; }
+        set { status = value; }
     }
 
-    public void UpdateLeadInfo(Company company, string businessType, string status) {
+    public void UpdateLeadInfo(Company company, BusinessTypeEnum businessType, StatusLeadEnum status) { //um update por informaçao nao? TODO
         this.company = company;
         this.country = company.Country; 
         this.businessType = businessType;
