@@ -1,20 +1,28 @@
 class Company {
-    private static int counter = 0;//ID: Unique identifier
+    private static int counter = 0;
     private int id = 0;//ID: Unique identifier
     private int nif;//● NIF: Tax Identification Number (required depending on country)
     private string address;//● Address: Company address
     private string country;//● Country: Country where the company is based
-    private string status;//● Status: Company status (e.g., Draft, Active)
+    private CompanyStatus status;//● Status: Company status (e.g., Draft, Active)
     private string stakeholder;//● Stakeholder: Person responsible for the company
     private string contact;//● Contact: Company contact information
+    enum CompanyStatus
+    {
+        Draft,      // Empresa criada, mas ainda não contactada/sem negocios
+        Active,     // Cliente ativo, esta a ser 
+        //TODO sera que os dois a baixo fazem sentido?
+        //Inactive,   // Já foi cliente mas no momento nao é
+        //Blacklisted // Bloqueado, não fazer negócio
+    }
 
     //CONSTRUCTOR
-    public Company(int nif, string address, string country, string status, string stakeholder, string contact) {
+    public Company(int nif, string address, string country, string stakeholder, string contact) {
         this.id = counter++;
         this.nif = nif;
         this.address = address;
         this.country = country;
-        this.status = status; //se calhar poderia iniciar logo como Draft, TODO verficiar
+        this.status = CompanyStatus.Draft; 
         this.stakeholder = stakeholder;
         this.contact = contact;
     }
@@ -35,7 +43,7 @@ class Company {
         get { return country; }
         set { country = value; }
     }
-    public string Status {
+    public CompanyStatus Status {
         get { return status; }
         set { status = value; }
     }
@@ -48,11 +56,11 @@ class Company {
         set { contact = value; }
     }
 
-    public void UpdateCompanyInfo(int nif, string address, string country, string status, string stakeholder, string contact) {
+    public void UpdateCompanyInfo(int nif, string address, string country,  string stakeholder, string contact) {
         this.nif = nif;
         this.address = address;
         this.country = country;
-        this.status = status;
+        //this.status = status; //TODO verificar se deveria criar uma função a parte para atualizar o estado, aqui não me parece fazer sentido.
         this.stakeholder = stakeholder;
         this.contact = contact;
     }
