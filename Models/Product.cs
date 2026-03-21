@@ -2,28 +2,41 @@ class Product {
     private static int counter = 0;
     private int productID = 0;
     private Product dependentProduct;//DependentProduct: Reference to another product (if dependent)
-    private string productType;//ProductType: Type/category of the product (e.g., Electronics, Furniture)
+    private ProductTypeEnum productType;//ProductType: Type/category of the product (e.g., Electronics, Furniture)
+    enum ProductTypeEnum
+    {
+        Electronics,
+        Furniture,
+        Food,
+        Clothing,
+        Food
+    }
 
     //CONSTRUTOR
-    public Product(Product dependentProduct, string productType) {
-        this.productID = counter++;
-        this.dependentProduct = dependentProduct;
-        this.productType = productType;
+    public Product(ProductTypeEnum productType, Product? dependentProduct = null){
+    if (productType == null){
+        throw new ArgumentNullException(nameof(productType), "Product must have a type.");
     }
+    this.productID = counter++;
+    this.DependentProduct = dependentProduct;
+    this.ProductType = productType;
+}
     //getters e setters
     public int ProductID {
-        get; 
+        get { return productID; }
     }
 
     public Product DependentProduct {
-        get; set;
+        get { return dependentProduct; }
+        set { dependentProduct = value; }
     }
 
-    public string ProductType {
-        get; set;
+    public ProductTypeEnum ProductType {
+        get { return productType; }
+        set { productType = value; }
     }
 
-    public void UpdateProductInfo(Product dependentProduct, string productType) {
+    public void UpdateProductInfo(Product dependentProduct, ProductTypeEnum productType) { //TODO verificar as funcoes update quando algum campo é null se ha stress, pq eu posso querer so atualizer um campo e pode ser estranho assim, talvez seja melhor criar funcoes de update para cada campo
         this.dependentProduct = dependentProduct;
         this.productType = productType;
     }
