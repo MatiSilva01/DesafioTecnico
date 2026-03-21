@@ -61,12 +61,19 @@ class Proposal {
     }
 
 //um update por cada campo talvez
-    public void UpdateProposalInfo(Lead lead, List<Product> products, double productionCost, int monthlyProducedProducts, double expectedMonthlyProfit, ProposalStatusEnum status) {
+    puvlic void UpdateProposalLead(Lead lead) {
         this.lead = lead;
-        this.products = products;
+    }
+    public void UpdateProposalProductionCost(double productionCost) {
         this.productionCost = productionCost;
+    }
+    public void UpdateProposalMonthlyProducedProducts(int monthlyProducedProducts) {
         this.monthlyProducedProducts = monthlyProducedProducts;
+    }
+    public void UpdateProposalExpectedMonthlyProfit(double expectedMonthlyProfit) {
         this.expectedMonthlyProfit = expectedMonthlyProfit;
+    }
+    public void UpdateProposalStatus(ProposalStatusEnum status) {
         this.status = status;
     }
 
