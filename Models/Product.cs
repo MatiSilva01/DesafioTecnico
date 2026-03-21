@@ -36,8 +36,10 @@ class Product {
         set { productType = value; }
     }
 
-    public void UpdateProductInfo(Product dependentProduct, ProductTypeEnum productType) { //TODO verificar as funcoes update quando algum campo é null se ha stress, pq eu posso querer so atualizer um campo e pode ser estranho assim, talvez seja melhor criar funcoes de update para cada campo
-        this.dependentProduct = dependentProduct;
+    public void UpdateProductType(ProductTypeEnum productType) {
         this.productType = productType;
+    }
+    public void UpdateDependentProduct(Product dependentProduct) {
+        this.dependentProduct = dependentProduct;
     }
 }
