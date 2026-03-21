@@ -56,12 +56,23 @@ class Company {
         set { contact = value; }
     }
 
-    public void UpdateCompanyInfo(int nif, string address, string country,  string stakeholder, string contact) {
+    //atualizar informacoes da empresa
+    public void UpdateCompanyNIF(int nif) {
         this.nif = nif;
+    }
+    public void UpdateCompanyAddress(string address) {
         this.address = address;
+    }
+    public void UpdateCompanyCountry(string country) {
         this.country = country;
-        //this.status = status; //TODO verificar se deveria criar uma função a parte para atualizar o estado, aqui não me parece fazer sentido.
+    }
+    public void UpdateCompanyStakeholder(string stakeholder) {
         this.stakeholder = stakeholder;
+    }
+    public void UpdateCompanyContact(string contact) {
         this.contact = contact;
+    }
+    public void UpdateCompanyStatus(CompanyStatus status) {
+        this.status = status;
     }
 }
