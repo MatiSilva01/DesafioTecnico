@@ -1,7 +1,7 @@
 class Company {
     private static int counter = 0;
     private int id = 0;//ID: Unique identifier
-    private int nif;//● NIF: Tax Identification Number (required depending on country)
+    private int? nif;//● NIF: Tax Identification Number (required depending on country)
     private string address;//● Address: Company address
     private Country country;//● Country: Country where the company is based
     private CompanyStatus status;//● Status: Company status (e.g., Draft, Active)
@@ -9,7 +9,7 @@ class Company {
     private string contact;//● Contact: Company contact information
 
     //CONSTRUCTOR
-    public Company( string address, Country country, string stakeholder, string contact, int nif = -1) {
+    public Company( string address, Country country, string stakeholder, string contact, int? nif = null) {
         this.id = counter++;
         this.nif = nif;
         this.address = address;
@@ -23,7 +23,7 @@ class Company {
     public int ID {
         get { return id; }
     }
-    public int NIF {
+    public int? NIF {
         get { return nif; }
         set { nif = value; }
     }
