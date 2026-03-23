@@ -2,37 +2,15 @@ class Lead {
     private Company company;//Company: Reference to the associated company
     private static int counter = 0;
     private int leadId = 0;//LeadID: Unique identifier
-    private string country;//Country: Inherited from the company
+    private Country country;//Country: Inherited from the company
     private BusinessTypeEnum businessType;//BusinessType: Type of business (e.g., Industry, Retail)
-    private string status;//Status: Status of the lead (e.g., Draft, Active)
-    enum BusinessTypeEnum
-    {
-        Industry,
-        Retail,
-        Education,
-        Technology,
-        Healthcare,
-        Finance,
-        Defense,
-        FoodService,
-        Transportation,
-        Energy
-    }
-    private enum StatusLeadEnum { 
-        Draft,  //criado e nao avançou
-        Accepted, //passou a proposal
-        Rejected //rejeitado 
-    }; // Company status (e.g., Draft, Active)
-    private StatusLeadEnum status; // Current status
-
+    private StatusLeadEnum status;//Status: Status of the lead (e.g., Draft, Active)
     //CONSTRUCTOR TODO
     public Lead(Company company, BusinessTypeEnum businessType) {
         if (company == null){
             throw new ArgumentNullException(nameof(company),"Lead must have an associated company.");
         }
-        if (businessType == null){
-            throw new ArgumentNullException(nameof(businessType),"Lead must have a business type.");
-        }
+        
         this.company = company;
         this.leadId = counter++;
         this.country = company.Country; //o contrutor esta mal porque o país é herdado da empresa
@@ -50,7 +28,7 @@ class Lead {
         get { return leadId; }
     }
 
-    public string Country {
+    public Country Country {
         get { return country; } //o país é herdado da empresa entao nao faz sentido o setter 
     }
     public BusinessTypeEnum BusinessType {
