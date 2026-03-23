@@ -6,9 +6,6 @@ class Product {
 
     //CONSTRUTOR
     public Product(ProductTypeEnum productType, Product? dependentProduct = null){
-    if (productType == null){
-        throw new ArgumentNullException(nameof(productType), "Product must have a type.");
-    }
     if (dependentProduct != null && productType != dependentProduct.ProductType){
         throw new InvalidOperationException("Dependent product must have the same ProductType");
     }
@@ -28,7 +25,12 @@ class Product {
 
     public ProductTypeEnum ProductType {
         get { return productType; }
-        set { productType = value; }
+        set { 
+            if (dependentProduct != null && value != dependentProduct.ProductType){
+                throw new InvalidOperationException("Cannot change ProductType: must match dependent product type.");
+            }
+            productType = value; 
+        }
     }
 
     public void UpdateProductType(ProductTypeEnum productType) {
