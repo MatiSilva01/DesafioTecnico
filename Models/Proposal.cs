@@ -8,13 +8,6 @@ class Proposal {
     private double expectedMonthlyProfit;//● ExpectedMonthlyProfit: Estimated profit per month
     private ProposalStatusEnum status;//● Status: Proposal status (e.g., Draft, Active)
     //● Inherits relevant fields from the associated Lead
-    enum ProposalStatusEnum { //TODO verificar se enum deve ser public 
-        Draft, //proposta criada 
-        Submitted, //proposta submetida para aprovação
-        Approved, //proposta aprovada
-        Rejected,
-        Expired //sem respoosta do cliente depois de um tempo
-    }
 
     public Proposal( Lead lead) {
         if (lead == null){
@@ -60,8 +53,8 @@ class Proposal {
         set { status = value; }
     }
 
-//um update por cada campo talvez
-    puvlic void UpdateProposalLead(Lead lead) {
+//TODO pensar melhor se faz sentido dado que muda a lead..
+    public void UpdateProposalLead(Lead lead) {
         this.lead = lead;
     }
     public void UpdateProposalProductionCost(double productionCost) {
@@ -110,9 +103,20 @@ class Proposal {
     }
 
     public void FinalizeProposal() {
-        if (lead != null && lead.Company != null){
-            Company company = lead.Company;
-            company.Status = CompanyStatusEnum.Active;
+        if (products.Count < 1){
+            Console.WriteLine("Error: Cannot finalize the proposal because it has no products.");
+            return; 
         }
+        if (productionCost <= 0){
+            Console.WriteLine("Error: Cannot finalize the proposal because the production cost is not defined or is less than or equal to zero.");
+            return;
+        }
+        if (expectedMonthlyProfit <= 0){
+            Console.WriteLine("Error: Cannot finalize the proposal because the expected monthly profit is not defined or is less than or equal to zero.");
+            return;
+        }
+        Company company = lead.Company;
+        company.Status = CompanyStatus.Active;
+        this.status = ProposalStatusEnum.Approved;
     }
 }
