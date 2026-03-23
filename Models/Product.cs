@@ -1,21 +1,16 @@
 class Product {
     private static int counter = 0;
     private int productID = 0;
-    private Product dependentProduct;//DependentProduct: Reference to another product (if dependent)
+    private Product? dependentProduct;//DependentProduct: Reference to another product (if dependent)
     private ProductTypeEnum productType;//ProductType: Type/category of the product (e.g., Electronics, Furniture)
-    enum ProductTypeEnum
-    {
-        Electronics,
-        Furniture,
-        Food,
-        Clothing,
-        Food
-    }
 
     //CONSTRUTOR
     public Product(ProductTypeEnum productType, Product? dependentProduct = null){
     if (productType == null){
         throw new ArgumentNullException(nameof(productType), "Product must have a type.");
+    }
+    if (dependentProduct != null && productType != dependentProduct.ProductType){
+        throw new InvalidOperationException("Dependent product must have the same ProductType");
     }
     this.productID = counter++;
     this.DependentProduct = dependentProduct;
@@ -26,7 +21,7 @@ class Product {
         get { return productID; }
     }
 
-    public Product DependentProduct {
+    public Product? DependentProduct {
         get { return dependentProduct; }
         set { dependentProduct = value; }
     }
