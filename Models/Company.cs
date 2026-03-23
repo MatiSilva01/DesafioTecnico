@@ -8,7 +8,6 @@ class Company {
     private string stakeholder;//● Stakeholder: Person responsible for the company
     private string contact;//● Contact: Company contact information
 
-    //CONSTRUCTOR
     public Company( string address, Country country, string stakeholder, string contact, int? nif = null) {
         this.id = counter++;
         this.nif = nif;
@@ -19,37 +18,30 @@ class Company {
         this.contact = contact;
     }
 
-    //GETTERS AND SETTERS
     public int ID {
         get { return id; }
     }
     public int? NIF {
         get { return nif; }
-        set { nif = value; }
     }
     public string Address {
         get { return address; }
-        set { address = value; }    
     }
     public Country Country {
         get { return country; }
-        set { country = value; }
     }
     public CompanyStatus Status {
         get { return status; }
-        set { status = value; }
     }
     public string Stakeholder {
         get { return stakeholder; }
-        set { stakeholder = value; }
     }
     public string Contact {
         get { return contact; }
-        set { contact = value; }
     }
 
     //atualizar informacoes da empresa
-    public void UpdateCompanyNIF(int nif) {
+    public void UpdateCompanyNIF(int nif) { //regra se for para portugal
         this.nif = nif;
     }
     public void UpdateCompanyAddress(string address) {
