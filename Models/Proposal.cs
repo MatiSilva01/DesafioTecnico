@@ -55,19 +55,44 @@ class Proposal {
 
 //TODO pensar melhor se faz sentido dado que muda a lead..
     public void UpdateProposalLead(Lead lead) {
-        this.lead = lead;
+        if (status == ProposalStatusEnum.Approved){
+            Console.WriteLine("Error: Cannot update the lead of an approved proposal.");
+            return;
+        } else {
+            this.lead = lead;
+        }
     }
     public void UpdateProposalProductionCost(double productionCost) {
-        this.productionCost = productionCost;
+        if (status == ProposalStatusEnum.Approved){
+            Console.WriteLine("Error: Cannot update the production cost of an approved proposal.");
+            return;
+        } else {
+            this.productionCost = productionCost;
+        }
     }
     public void UpdateProposalMonthlyProducedProducts(int monthlyProducedProducts) {
-        this.monthlyProducedProducts = monthlyProducedProducts;
+        if (status == ProposalStatusEnum.Approved){
+            Console.WriteLine("Error: Cannot update the monthly produced products of an approved proposal.");
+            return; 
+        } else {
+            this.monthlyProducedProducts = monthlyProducedProducts;
+        }
     }
     public void UpdateProposalExpectedMonthlyProfit(double expectedMonthlyProfit) {
-        this.expectedMonthlyProfit = expectedMonthlyProfit;
+        if (status == ProposalStatusEnum.Approved){
+            Console.WriteLine("Error: Cannot update the expected monthly profit of an approved proposal.");
+            return; 
+        } else {
+            this.expectedMonthlyProfit = expectedMonthlyProfit;
+        }
     }
     public void UpdateProposalStatus(ProposalStatusEnum status) {
-        this.status = status;
+        if (this.status == ProposalStatusEnum.Approved){
+            Console.WriteLine("Error: Cannot update the status of an approved proposal.");
+            return; 
+        } else {
+            this.status = status;
+        }
     }
 
     public void AddProduct(Product product) {
@@ -109,6 +134,10 @@ class Proposal {
         }
         if (productionCost <= 0){
             Console.WriteLine("Error: Cannot finalize the proposal because the production cost is not defined or is less than or equal to zero.");
+            return;
+        }       
+        if (monthlyProducedProducts <= 0){
+            Console.WriteLine("Error: Cannot finalize the proposal because the monthly produced products is not defined or is less than or equal to zero.");
             return;
         }
         if (expectedMonthlyProfit <= 0){
