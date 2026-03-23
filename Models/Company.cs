@@ -3,21 +3,13 @@ class Company {
     private int id = 0;//ID: Unique identifier
     private int nif;//● NIF: Tax Identification Number (required depending on country)
     private string address;//● Address: Company address
-    private string country;//● Country: Country where the company is based
+    private Country country;//● Country: Country where the company is based
     private CompanyStatus status;//● Status: Company status (e.g., Draft, Active)
     private string stakeholder;//● Stakeholder: Person responsible for the company
     private string contact;//● Contact: Company contact information
-    enum CompanyStatus
-    {
-        Draft,      // Empresa criada, mas ainda não contactada/sem negocios
-        Active,     // Cliente ativo, esta a ser 
-        //TODO sera que os dois a baixo fazem sentido?
-        //Inactive,   // Já foi cliente mas no momento nao é
-        //Blacklisted // Bloqueado, não fazer negócio
-    }
 
     //CONSTRUCTOR
-    public Company(int nif, string address, string country, string stakeholder, string contact) {
+    public Company( string address, Country country, string stakeholder, string contact, int nif = -1) {
         this.id = counter++;
         this.nif = nif;
         this.address = address;
@@ -39,7 +31,7 @@ class Company {
         get { return address; }
         set { address = value; }    
     }
-    public string Country {
+    public Country Country {
         get { return country; }
         set { country = value; }
     }
@@ -63,7 +55,7 @@ class Company {
     public void UpdateCompanyAddress(string address) {
         this.address = address;
     }
-    public void UpdateCompanyCountry(string country) {
+    public void UpdateCompanyCountry(Country country) {
         this.country = country;
     }
     public void UpdateCompanyStakeholder(string stakeholder) {
