@@ -61,7 +61,8 @@ public class Testes
         Assert.That(company1.Address, Is.EqualTo("Rua da machada numero 2"));
         company1.UpdateCompanyCountry(Country.Spain);
         Assert.That(company1.Country, Is.EqualTo(Country.Spain));
-        company1.UpdateCompanyStatus(CompanyStatus.Active); //nao deve permitir atualizar para active sem ter uma proposta associada e sem essa proposta estar finalizada 
+        //nao deve permitir atualizar para active uma company manualemnte, apenas ao finalizar uma proposta
+        Assert.Throws<InvalidOperationException>(() => company1.UpdateCompanyStatus(CompanyStatus.Active));
         Assert.That(company1.Status, Is.EqualTo(CompanyStatus.Draft));
         company1.UpdateCompanyStakeholder("Mário Andrade Silva");
         Assert.That(company1.Stakeholder, Is.EqualTo("Mário Andrade Silva"));
@@ -73,7 +74,8 @@ public class Testes
         company4.UpdateCompanyNIF(99999999);
         Assert.That(company4.NIF, Is.EqualTo(99999999));//deve permitir atualizar nif porque é portuguesa
         //update country e nif
-        company3.UpdateCompanyCountry(Country.Portugal);
+        //se muda pais para portugal e nao da nif nao deve atualizar o pais
+        Assert.Throws<InvalidOperationException>(() => company3.UpdateCompanyCountry(Country.Portugal));
         Assert.That(company3.Country, Is.EqualTo(Country.Spain));//nao atualiza porque tentou mudificar para Portugal sem nif
         company3.UpdateCompanyCountry(Country.Portugal, 11111111);
         Assert.That(company3.Country, Is.EqualTo(Country.Portugal));

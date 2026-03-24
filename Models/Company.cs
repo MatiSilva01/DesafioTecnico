@@ -54,8 +54,7 @@ public class Company {
     public void UpdateCompanyCountry(Country country, int? nif = null) {
         if (country == Country.Portugal) {
             if (nif == null) {
-                Console.WriteLine("Error: NIF is required when changing country to Portugal.");
-                return;
+                throw new InvalidOperationException("Error: NIF is required when changing country to Portugal.");
             }
             this.nif = nif;
         } else {
@@ -71,15 +70,13 @@ public class Company {
     }
     public void UpdateCompanyStatus(CompanyStatus status) {//pode mudar se nao for para active
         if (status == CompanyStatus.Active) {
-            Console.WriteLine("Error: Company status can only change to Active after finalizing a proposal.");
-            return;
+            throw new InvalidOperationException("Error: Company status can only change to Active after finalizing a proposal.");
         }
         this.status = status;
     }
     public void ActivateCompany(Proposal proposal) { //recebe a proposal para garantir que não ativa a empresa sem ter uma proposta associada, e para garantir que a proposta esta aprovada
          if (proposal == null || proposal.Status != ProposalStatusEnum.Approved) {
-            Console.WriteLine("Error: Company can only be activated with an approved proposal.");
-             return;
+            throw new InvalidOperationException("Error: Company can only be activated with an approved proposal.");
         }
         this.status = CompanyStatus.Active;
     }
