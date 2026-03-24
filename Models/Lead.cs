@@ -1,6 +1,6 @@
-class Lead { //oportunidade de negocio com uma dada empresa, mas pode ser convertido numa proposta real
+public class Lead { //oportunidade de negocio com uma dada empresa, mas pode ser convertido numa proposta real
     private Company company;//Company: Reference to the associated company
-    private static int counter = 0;
+    private static int counterLead = 0;
     private int leadId = 0;//LeadID: Unique identifier
     private Country country;//Country: Inherited from the company
     private BusinessTypeEnum businessType;//BusinessType: Type of business (e.g., Industry, Retail)
@@ -11,7 +11,7 @@ class Lead { //oportunidade de negocio com uma dada empresa, mas pode ser conver
             throw new ArgumentNullException(nameof(company),"Lead must have an associated company.");
         }
         this.company = company;
-        this.leadId = counter++;
+        this.leadId = counterLead++;
         this.country = company.Country; //o contrutor esta mal porque o país é herdado da empresa
         this.businessType = businessType; 
         this.status = StatusLeadEnum.Draft; //construtor logo mete em draft
@@ -40,9 +40,19 @@ class Lead { //oportunidade de negocio com uma dada empresa, mas pode ser conver
         this.businessType = businessType;
     }
     public void UpdateLeadStatus(StatusLeadEnum status) {
+        if (status == StatusLeadEnum.Accepted){ 
+            Console.WriteLine("Error: Lead status can only change to Active after creating a proposal.");
+            return;
+        }
         this.status = status;
     }
-    public Proposal leadToProposal() {
-        return new Proposal(this);
+    public Proposal? leadToProposal() {
+        if (this.status == StatusLeadEnum.Accepted){
+            Console.WriteLine($"Cannot convert Lead ID={this.LeadId} to Proposal because there's an existing proposal associated with this lead.");
+            return null; //TODO nao converter o lead para proposta
+        } else {
+            this.status = StatusLeadEnum.Accepted; //atualizar o status do lead para accepted quando for convertido para proposta, para nao permitir criar mais do que uma proposta a partir do mesmo lead
+            return new Proposal(this);
+        }
     }
 }
