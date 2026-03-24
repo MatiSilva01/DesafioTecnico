@@ -1,0 +1,140 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.Tests/desafio@CrossJoin.Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.csproj",
+        "projectName": "desafio@CrossJoin",
+        "projectPath": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.csproj",
+        "packagesPath": "/Users/matildesilva/.nuget/packages/",
+        "outputPath": "/Users/matildesilva/Downloads/desafio@CrossJoin/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/matildesilva/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.410/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.Tests/desafio@CrossJoin.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.Tests/desafio@CrossJoin.Tests.csproj",
+        "projectName": "desafio@CrossJoin.Tests",
+        "projectPath": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.Tests/desafio@CrossJoin.Tests.csproj",
+        "packagesPath": "/Users/matildesilva/.nuget/packages/",
+        "outputPath": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/matildesilva/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.csproj": {
+                "projectPath": "/Users/matildesilva/Downloads/desafio@CrossJoin/desafio@CrossJoin.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.7.1, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[4.5.1, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.410/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
