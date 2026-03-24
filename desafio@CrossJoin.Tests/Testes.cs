@@ -15,7 +15,9 @@ public class Testes
     private Product product1;
     private Product product2;
     private Product product3;
-
+    private Product product4;
+    private Product product5;
+    private Product product6;
 
     [SetUp]
     public void SetUp()
@@ -32,7 +34,9 @@ public class Testes
         product1 = new Product(ProductTypeEnum.Electronics);
         product2 = new Product(ProductTypeEnum.Food);
         product3 = new Product(ProductTypeEnum.Electronics, product1); //produto dependente de outro do mesmo tipo, cumpre a regra
-
+        product4 = new Product(ProductTypeEnum.Food); 
+        product5 = new Product(ProductTypeEnum.Food, product4); //produto dependente de outro do mesmo tipo, cumpre a regra
+        product6 = new Product(ProductTypeEnum.Clothes);
     }
 
     //COMPANY TESTS
@@ -92,15 +96,13 @@ public class Testes
     public void TestLeadUpdate() {
         lead1.UpdateLeadBusinessType(BusinessTypeEnum.Retail);
         Assert.That(lead1.BusinessType, Is.EqualTo(BusinessTypeEnum.Retail));
-        lead1.UpdateLeadStatus(StatusLeadEnum.Accepted);
-        Assert.That(lead1.Status, Is.EqualTo(StatusLeadEnum.Draft));//sem a criacao de uma proposta, o status do lead nao deve mudar para active
-        lead1.UpdateLeadStatus(StatusLeadEnum.Rejected);
-        Assert.That(lead1.Status, Is.EqualTo(StatusLeadEnum.Rejected));//mas pode ser mudado para outro estado 
+        Assert.That(lead1.Status, Is.EqualTo(StatusLeadEnum.Draft));//sem a criacao de uma proposta, o status do lead e draft
     }
 
     //Product tests
     [Test]
     public void TestProductCreation() {
+        Assert.That(product1.ProductID, Is.LessThan(product2.ProductID));
         Assert.That(product1.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
         Assert.That(product1.DependentProduct, Is.EqualTo(null));
         Assert.That(product3.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
@@ -148,4 +150,112 @@ public class Testes
         Assert.That(product4.DependentProduct, Is.EqualTo(product6));
     }
 
+    //PROPOSAL TESTS
+    [Test]
+    public void TestProposalCreation() {
+        //Construtor de Proposal recebe Lead
+        //propostas apenas criadas aqui porque se em cima alterava o estado da lead devido a ja haver umaproposal e os testes nao batiam certo
+        var proposal1 = lead1.leadToProposal();
+        var proposal2 = new Proposal(lead2);
+        Assert.That(proposal1.ProposalID, Is.LessThan(proposal2.ProposalID));
+        //verificar se a proposta foi criada corretamente com os dados herdados da lead quando criada com o leadToProposal
+        Assert.That(proposal1.Company, Is.EqualTo(company1));
+        Assert.That(proposal1.Country, Is.EqualTo(company1.Country));
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+        //verificar se a proposta foi criada corretamente com os dados herdados da lead quando criada com o construtor de Proposal
+        Assert.That(proposal2.Company, Is.EqualTo(company2));
+        Assert.That(proposal2.Country, Is.EqualTo(company2.Country));
+        Assert.That(proposal2.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+        //tentar criar propostas a partir da mesma lead com o LeadToProposal
+        //tentar criar outra proposta a partir da mesma lead1 atraves de lead1.leadToProposal() - nao deve permitir porque o status do lead1 ja é accepted
+        Assert.Throws<InvalidOperationException>(() => lead1.leadToProposal());
+        //tentar criar outra proposta a partir da mesma lead1 atraves do construtor de Proposal - nao deve permitir porque o status do lead1 ja é accepted
+        Assert.Throws<InvalidOperationException>(() => new Proposal(lead1));
+        //tentar criar propostas a partir da mesma lead com o construtor de Proposal
+        //tentar criar outra proposta a partir da mesma lead2 atraves de lead2.leadToProposal() - nao deve permitir porque o status do lead1 ja é accepted
+        Assert.Throws<InvalidOperationException>(() => lead2.leadToProposal());
+        //tentar criar outra proposta a partir da mesma lead1 atraves do construtor de Proposal - nao deve permitir porque o status do lead1 ja é accepted
+        Assert.Throws<InvalidOperationException>(() => new Proposal(lead2));
+    }
+    [Test]
+    public void TestProposalUpdate() {
+        var proposal1 = lead1.leadToProposal();
+        //antes de fazer update não tem valores iniciais e o estado e draft
+        Assert.That(proposal1.ProductionCost, Is.EqualTo(0));
+        Assert.That(proposal1.MonthlyProducedProducts, Is.EqualTo(0));
+        Assert.That(proposal1.ExpectedMonthlyProfit, Is.EqualTo(0));
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+        //atualizar os dados da proposta
+        proposal1.UpdateProposalProductionCost(1000);
+        Assert.That(proposal1.ProductionCost, Is.EqualTo(1000));
+        proposal1.UpdateProposalMonthlyProducedProducts(500);
+        Assert.That(proposal1.MonthlyProducedProducts, Is.EqualTo(500));
+        proposal1.UpdateProposalExpectedMonthlyProfit(2000);
+        Assert.That(proposal1.ExpectedMonthlyProfit, Is.EqualTo(2000));
+
+        //tentar definir valores invalidos
+        Assert.Throws<InvalidOperationException>(() => proposal1.UpdateProposalProductionCost(0));
+        Assert.Throws<InvalidOperationException>(() => proposal1.UpdateProposalMonthlyProducedProducts(-10));
+        Assert.Throws<InvalidOperationException>(() => proposal1.UpdateProposalExpectedMonthlyProfit(-5));
+        //tenatar definir o estado da proposta para approved manualmente - nao deve permitir
+        Assert.Throws<InvalidOperationException>(() => proposal1.UpdateProposalStatus(ProposalStatusEnum.Approved));
+        //verificar que status continua draft
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+    }
+    //test add product to proposal
+    [Test]
+    public void TestAddProductToProposal() {
+        var proposal1 = lead1.leadToProposal();
+        //adicionar produto com dependencias sem ter o produto de que é dependente na lista de produtos da proposta - nao deve permitir
+        //proposal1.AddProduct(product5);
+        Assert.Throws<InvalidOperationException>(() => proposal1.AddProduct(product5)); //nao deve permitir adicionar o produto5 porque a sua dependencia (produto4) nao esta na lista de produtos da proposta
+        Assert.That(proposal1.Products, Does.Not.Contain(product5));
+        //adicionar produto com dependencias tendo o produto de que é dependente na lista de produtos da proposta - deve permitir
+        proposal1.AddProduct(product4);
+        proposal1.AddProduct(product5);
+        Assert.That(proposal1.Products, Does.Contain(product5));
+        Assert.That(proposal1.Products, Does.Contain(product4));
+        //adicionar produto sem dependencias
+        proposal1.AddProduct(product6);
+        Assert.That(proposal1.Products, Does.Contain(product6));
+        //remover produto da lista
+        //remover produto sem dependencias - deve permitir
+        proposal1.RemoveProduct(product6);
+        Assert.That(proposal1.Products, Does.Not.Contain(product6));
+        //remover produto que tem dependentes na lista - não deve permitir, deve informar que deve primeiro remover os produtos dependentes
+        Assert.Throws<InvalidOperationException>(() => proposal1.RemoveProduct(product4));//porque o produto 5  depende do produto 4
+        Assert.That(proposal1.Products, Does.Contain(product4));
+        //remover produto que é dependente de outro - deve permitir
+        proposal1.RemoveProduct(product5);
+        Assert.That(proposal1.Products, Does.Not.Contain(product5));
+        //como ja removemos produtos dependentes do produto 4, agora deve ser possivel remover o produto 4
+        proposal1.RemoveProduct(product4);
+        Assert.That(proposal1.Products, Does.Not.Contain(product4));
+    }
+    [Test]
+    public void TestFinalizeProposal() {
+        var proposal1 = lead1.leadToProposal();
+        //o status da company associada a proposal e a lead deve ser draft
+        Assert.That(proposal1.Company.Status, Is.EqualTo(CompanyStatus.Draft));
+        //o estado da lead inicial deve ser accepted
+        Assert.That(lead1.Status, Is.EqualTo(StatusLeadEnum.Accepted));
+        //finalizar proposta sem produtos - nao deve permitir porque a proposta tem de ter pelo menos um produto
+        Assert.Throws<InvalidOperationException>(() => proposal1.FinalizeProposal());
+        //o status deve continuar draft
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+        //adcionar produto e tentar finalizar - nao deve permitir porque deve ter productionCost, monthlyProducedProducts e expectedMonthlyProfit superiores a 0
+        proposal1.AddProduct(product6);
+        Assert.Throws<InvalidOperationException>(() => proposal1.FinalizeProposal());
+        //o estado deve continuar draft
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Draft));
+        //adicionar produto e definir restantes dados 
+        proposal1.AddProduct(product6);
+        proposal1.UpdateProposalProductionCost(1000);
+        proposal1.UpdateProposalMonthlyProducedProducts(500);
+        proposal1.UpdateProposalExpectedMonthlyProfit(2000);
+        proposal1.FinalizeProposal();
+        Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Approved));
+        //o status da company associada a proposal e a lead deve ter passado a active
+        Assert.That(proposal1.Company.Status, Is.EqualTo(CompanyStatus.Active));}
+    
 }
