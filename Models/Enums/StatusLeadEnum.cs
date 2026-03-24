@@ -1,5 +1,4 @@
 public enum StatusLeadEnum { 
     Draft,  //criado e nao avançou
-    Accepted, //passou a proposal ou seja nao deve ser posto a mao TODO
-    Rejected //rejeitado 
+    Accepted //foi convertido para proposta, ou seja, tem uma proposta associada
 }; 

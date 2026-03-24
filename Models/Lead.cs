@@ -39,20 +39,14 @@ public class Lead { //oportunidade de negocio com uma dada empresa, mas pode ser
     public void UpdateLeadBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
     }
-    public void UpdateLeadStatus(StatusLeadEnum status) {
-        if (status == StatusLeadEnum.Accepted){ 
-            Console.WriteLine("Error: Lead status can only change to Active after creating a proposal.");
-            return;
-        }
+    public void UpdateLeadStatus(StatusLeadEnum status) { 
         this.status = status;
     }
-    public Proposal? leadToProposal() {
+
+    public Proposal leadToProposal() {
         if (this.status == StatusLeadEnum.Accepted){
-            Console.WriteLine($"Cannot convert Lead ID={this.LeadId} to Proposal because there's an existing proposal associated with this lead.");
-            return null; //TODO nao converter o lead para proposta
-        } else {
-            this.status = StatusLeadEnum.Accepted; //atualizar o status do lead para accepted quando for convertido para proposta, para nao permitir criar mais do que uma proposta a partir do mesmo lead
-            return new Proposal(this);
+            throw new InvalidOperationException($"Cannot convert Lead ID={this.LeadId} to Proposal because there's an existing proposal associated with this lead.");
         }
+        return new Proposal(this);
     }
 }
