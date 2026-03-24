@@ -31,7 +31,8 @@ public class CompanyAndLeadTest
         //Product(ProductTypeEnum productType, Product? dependentProduct = null)
         product1 = new Product(ProductTypeEnum.Electronics);
         product2 = new Product(ProductTypeEnum.Food);
-        product3 = new Product(ProductTypeEnum.Clothes, product1);
+        product3 = new Product(ProductTypeEnum.Electronics, product1); //produto dependente de outro do mesmo tipo, cumpre a regra
+
     }
 
     //COMPANY TESTS
@@ -100,11 +101,51 @@ public class CompanyAndLeadTest
     //Product tests
     [Test]
     public void TestProductCreation() {
-       // Assert.That(product1.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
-       // Assert.That(product1.DependentProduct, Is.EqualTo(null));
-       //Assert.That(product3.ProductType, Is.EqualTo("Dependent product must have the same ProductType"));
-        //Assert.That(product3.DependentProduct, Is.EqualTo(product1));
+        Assert.That(product1.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
+        Assert.That(product1.DependentProduct, Is.EqualTo(null));
+        Assert.That(product3.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
+        Assert.That(product3.DependentProduct, Is.EqualTo(product1)); //produto dependente de outro do mesmo tipo
+        //Nao deve permitir criar um produto dependente de outro de tipo diferente
+        Assert.Throws<InvalidOperationException>(() => new Product(ProductTypeEnum.Food, product1));
+        //verificar lista de produtos filhos
+        Assert.That(product1.DependentProducts, Does.Contain(product3)); //produto1 tem como produto dependente o produto3
+        Assert.That(product2.DependentProducts, Is.Empty); //produto2 nao tem produtos dependentes
+    }
+    [Test]
+    public void TestProductUpdateType() {
+        //atualizar tipo de produtos que tem dependentes - não deve ser possivel porque tem filhos
+        Assert.Throws<InvalidOperationException>(() => product1.UpdateProductType(ProductTypeEnum.Food));
+         //atualizar tipo de produto que nao tem dependetes (nao é pai de outros) e nao é filho de nenhum produto (nao é dependente de nenhum produto) - deve ser possivel atualizar para qualquer tipo
+        product2.UpdateProductType(ProductTypeEnum.Clothes);
+        Assert.That(product2.ProductType, Is.EqualTo(ProductTypeEnum.Clothes));
+        //atualizar tipo de produto que não tem dependetes (não e pai de outtros) mas é filho de algum (é dependente)
+        //não deve ser possivel se tiver tipo diferente do produto de quem e filho
+        Assert.Throws<InvalidOperationException>(() => product3.UpdateProductType(ProductTypeEnum.Food));
+        //deve ser possivel atualizar se for do mesmo tipo do produto de quem é filho
+        product3.UpdateProductType(ProductTypeEnum.Electronics); //fica na mesma basicamente - nao da erro
+        Assert.That(product3.ProductType, Is.EqualTo(ProductTypeEnum.Electronics));
     }
 
+    [Test ]
+    public void TestProductUpdateDependentProduct() {
+        //se puser que e filho de um produto com tipo difetente do seu nao deve permitir
+        //product 2 e do tipo clothes e 1 é do tipo eletronic
+        Assert.Throws<InvalidOperationException>(() => product2.UpdateDependentProduct(product1));
+        //se puser que é filho de um produto com o mesmo tipo deve permitir
+        Product product4 = new Product(ProductTypeEnum.Clothes);
+        Product product5 = new Product(ProductTypeEnum.Clothes);
+        product4.UpdateDependentProduct(product5);
+        Assert.That(product4.DependentProduct, Is.EqualTo(product5));
+        Assert.That(product5.DependentProducts, Does.Contain(product4));//a lista de filhos do pai 5 deve ter o filho 4
+        //ja tem um pai mas queremos definir outro pai (com o mesmo tipo, deve permitir)
+        Product product6 = new Product(ProductTypeEnum.Clothes);
+        product4.UpdateDependentProduct(product6);
+        Assert.That(product4.DependentProduct, Is.EqualTo(product6));
+        Assert.That(product5.DependentProducts, Does.Not.Contain(product4)); //o produto 4 ja nao é filho do produto 5 pelo que nao deve estar na lista de filhos do 5
+        Assert.That(product6.DependentProducts, Does.Contain(product4)); //o produto 4 agora é filho do produto 6 pelo que deve estar na lista de filhos do 6
+        //ja tem um pai mas queremos definir outro pai (com tipo diferente, nao deve permitir e deve manter o mesmo pai que ja tinha)
+        Assert.Throws<InvalidOperationException>(() => product4.UpdateDependentProduct(product1));
+        Assert.That(product4.DependentProduct, Is.EqualTo(product6));
+    }
 
 }
