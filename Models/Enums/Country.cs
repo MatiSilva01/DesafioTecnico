@@ -1,6 +1,5 @@
 public enum Country
 {
-    Usa,
     Afghanistan,
     Albania,
     Algeria,
@@ -193,6 +192,7 @@ public enum Country
     Ukraine,
     UnitedArabEmirates,
     UnitedKingdom,
+    UnitedStates,
     Uruguay,
     Uzbekistan,
     Vanuatu,
