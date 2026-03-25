@@ -1,0 +1,11 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio / VS Code
+.vs/
+*.user
+*.suo
+
+# macOS
+.DS_Store
