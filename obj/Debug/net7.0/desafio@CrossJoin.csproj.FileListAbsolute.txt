@@ -1,0 +1,14 @@
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.GeneratedMSBuildEditorConfig.editorconfig
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.AssemblyInfoInputs.cache
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.AssemblyInfo.cs
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.csproj.CoreCompileInputs.cache
+/Users/matildesilva/Downloads/desafio@CrossJoin/bin/Debug/net7.0/desafio@CrossJoin
+/Users/matildesilva/Downloads/desafio@CrossJoin/bin/Debug/net7.0/desafio@CrossJoin.deps.json
+/Users/matildesilva/Downloads/desafio@CrossJoin/bin/Debug/net7.0/desafio@CrossJoin.runtimeconfig.json
+/Users/matildesilva/Downloads/desafio@CrossJoin/bin/Debug/net7.0/desafio@CrossJoin.dll
+/Users/matildesilva/Downloads/desafio@CrossJoin/bin/Debug/net7.0/desafio@CrossJoin.pdb
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.dll
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/refint/desafio@CrossJoin.dll
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.pdb
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/desafio@CrossJoin.genruntimeconfig.cache
+/Users/matildesilva/Downloads/desafio@CrossJoin/obj/Debug/net7.0/ref/desafio@CrossJoin.dll
