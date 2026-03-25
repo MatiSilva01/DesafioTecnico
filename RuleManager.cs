@@ -1,37 +1,42 @@
-class RuleManager{ //vai guardar todas as regras de validacao, e vai ser responsavel por validar as regras, ou seja, avaliar as condicoes das regras e verificar se os campos estao preenchidos ou nao
-    private List<Rule> rules; // List of rules
+public class RuleManager{
+    private List<Rule> rules;
     
     public RuleManager() {
         this.rules = new List<Rule>();
     }
 
-    public void AddRule(Rule rule){
-        this.rules.Add(rule);
+    public void SetRequired(string className, string fieldName, Func<object, bool> condition, bool isRequired) {
+        rules.Add(new Rule(className, fieldName, condition, isRequired));
     }
-    public bool isFieldRequired(string className, string fieldName){
-        foreach (Rule rule in rules){
-            if (rule.ClassName == className && rule.FieldName == fieldName){
-                return rule.IsRequired;
-            }
+
+
+    public List<String> ValidateRules(object entity){ 
+        if (entity == null) {
+            throw new ArgumentNullException("Entity to validate cant be null.");
         }
-        return false; 
-    }
-    public List<String> Validate(object entity){ 
         List<String> validationErrors = new List<String>();
         string className = entity.GetType().Name; //obter o nome da classe do objeto, para comparar com as regras
         foreach (Rule rule in rules){
-            if (rule.ClassName == className && rule.Condition(entity)) { //verificar se a regra se aplica à classe do objeto e se a condição da regra é satisfeita para o objeto
-                //vamos buscar do campo que 
-                //entity.GetType() //obter o tipo do objeto, no caso a classe Company
-                //entity.GetType().GetProperty(rule.FieldName) //obter a propriedade do objeto que corresponde ao nome do campo da regra, por exemplo a propriedade NIF
-                //entity.GetType().GetProperty(rule.FieldName).GetValue(entity) //obter o valor do campo do objeto, no caso o valor do NIF da empresa
-                var prop = entity.GetType().GetProperty(rule.FieldName);
-                var fieldValue = prop != null ? prop.GetValue(entity) : null;
-                if (fieldValue == null || fieldValue.ToString() == "-1" || string.IsNullOrEmpty(fieldValue.ToString())){ //verificar se o campo esta vazio ou nulo
-                    if (rule.IsRequired){ //se o campo é obrigatório, mas está vazio, então é um erro de validação
-                        validationErrors.Add($"Field {rule.FieldName} is required for class {rule.ClassName}.");
+            if (rule.ClassName == className ) { //verificar se a regra se aplica à classe do objeto 
+                //verificar se a condicao e cumprida
+                bool conditionResult = rule.Condition(entity); //chamar a funcao da condicao da regra //ex: para a regra do NIF obrigatório para empresas em Portugal, a funcao vai verificar se o objeto é uma empresa e se o país da empresa é Portugal
+                if (conditionResult){//se a condicao e cumprida Ex:pais e pt
+                    if (rule.IsRequired){ //sverificar se o campor e obrigatio (no caso sim e necessario nif)
+                        //verificar se o campo tem valor
+                        //var propertyInfo = entity.GetType()//o tipo (no caso do nif seria company)
+                        var propertyInfo = entity.GetType().GetProperty(rule.FieldName); //obter a informacao do campo (exemplo nome dele e nif, é uma string )
+                        if (propertyInfo != null) {
+                            var fieldValue = propertyInfo.GetValue(entity); //obter o valor do campo (exemplo o valor do nif da empresa)
+                            if (fieldValue == null || string.IsNullOrEmpty(fieldValue.ToString())){ //verificar se o valor do campo é nulo ou vazio (casos por exemplo em que stakeholder e "" daria vazio e nao null)
+                                validationErrors.Add($"Error: {rule.FieldName} is required for {className}.");
+                            }
+                        } else {
+                            validationErrors.Add($"Error: Property '{rule.FieldName}' not found in {className}.");
+                        }
+                        
                     }
                 }
+                
             }
         }
     
@@ -43,26 +48,20 @@ class RuleManager{ //vai guardar todas as regras de validacao, e vai ser respons
     public void clearRules(){
         this.rules.Clear();
     }
-    //TODO nao me parece tar bem
-    public List<Rule> GetRules(){
-        return this.rules;
+    public List<Rule> getRules(){
+        return rules;
     }
 
+    //a condicao que queremos implementar (ou seja a funcao que vai em condition)
     public static bool CompanyIsInPortugal(object obj){
-        Company company = (Company)obj; //fazer um cast do objeto para a classe Company, para acessar o campo Country
-        return company.Country == Country.Portugal; //verificar se o campo Country da empresa é igual a Portugal, e retornar true ou false
+        Company company = (Company)obj; 
+        //verificar se a company é portuguesa
+        return company.Country == Country.Portugal; 
     }
 
-    /*public static void ApplyRules(Proposal proposal)
-    {
-        if (proposal.ProductionCost > 4000.0){
-            proposal.Status = ProposalStatusEnum.Rejected;
-        }else if (proposal.MonthlyProducedProducts < 10){
-            proposal.Status = ProposalStatusEnum.Rejected;
-        }else if (proposal.ExpectedMonthlyProfit < 1000.0){
-            proposal.Status = ProposalStatusEnum.Rejected;
-        }else{
-            proposal.Status = ProposalStatusEnum.Approved;
-        }
-    }*/
+    public static bool StakeholderIsRequired(object obj){
+        Company company = (Company)obj;
+        return (string.IsNullOrEmpty(company.Stakeholder));
+    }
+    
 }
