@@ -19,6 +19,9 @@ public class Testes
     private Product product5;
     private Product product6;
 
+    private RuleManager ruleManager;
+
+
     [SetUp]
     public void SetUp()
     {
@@ -37,6 +40,8 @@ public class Testes
         product4 = new Product(ProductTypeEnum.Food); 
         product5 = new Product(ProductTypeEnum.Food, product4); //produto dependente de outro do mesmo tipo, cumpre a regra
         product6 = new Product(ProductTypeEnum.Clothes);
+
+        ruleManager = new RuleManager();
     }
 
     //COMPANY TESTS
@@ -259,5 +264,29 @@ public class Testes
         Assert.That(proposal1.Status, Is.EqualTo(ProposalStatusEnum.Approved));
         //o status da company associada a proposal e a lead deve ter passado a active
         Assert.That(proposal1.Company.Status, Is.EqualTo(CompanyStatus.Active));}
+
+    //RULE MANAGER TESTS
+    [Test]
+    public void TestRuleNIF() {
+        ruleManager.SetRequired("Company", "NIF", RuleManager.CompanyIsInPortugal, true);
+        var errors = ruleManager.ValidateRules(company4); // company4 é Portugal e sem NIF no setup
+        Assert.That(errors.Count, Is.EqualTo(1));
+        var valid = ruleManager.ValidateRules(company1); // company1 é Portugal e tem NIF no setup
+        Assert.That(valid.Count, Is.EqualTo(0));
+        var valid2 = ruleManager.ValidateRules(company2); // company2 nao é Portugal e nao tem NIF no setup
+        Assert.That(valid2.Count, Is.EqualTo(0));
+
+    }
+
+    [Test]
+    public void TestCompanyStakeholderRequired() {
+        ruleManager.SetRequired("Company", "Stakeholder", RuleManager.StakeholderIsRequired, true);
+        var invalidStakeholder= new Company("Lisboa", Country.Portugal, "", "joao@email.com", 123);
+        var errors = ruleManager.ValidateRules(invalidStakeholder);
+        Assert.That(errors.Count, Is.EqualTo(1));
+
+    }
+  
+
     
 }
